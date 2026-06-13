@@ -55,6 +55,7 @@ input[type="time"]{
     font-size:24px;
     border:1px solid #ccc;
     border-radius:8px;
+
     -webkit-appearance:none;
     appearance:none;
 }
@@ -75,24 +76,43 @@ button{
     margin-top:30px;
 }
 
-/* 小さい補助文字 */
-.smallText{
-    font-size:14px;
-    color:#666;
-}
-
-/* 中くらい（08:15～） */
-.midText{
-    font-size:20px;
-    color:#333;
-}
-
-/* 大きい（17:45） */
-.bigText{
+.finish775{
     font-size:56px;
     font-weight:bold;
     color:#d60000;
-    margin-top:5px;
+}
+
+.warning{
+    color:#d60000;
+    font-weight:bold;
+}
+
+.info{
+    margin-top:30px;
+    border-top:1px solid #ccc;
+    padding-top:20px;
+    line-height:1.7;
+}
+
+.ruleTitle{
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.footer{
+    margin-top:30px;
+    border-top:1px solid #eee;
+    text-align:center;
+    font-size:12px;
+    color:#888;
+    padding-top:15px;
+}
+
+/* ★今回追加：小さい補助表示 */
+.smallText{
+    font-size:14px;
+    color:#666;
+    margin-bottom:4px;
 }
 
 </style>
@@ -114,6 +134,8 @@ button{
 <button onclick="calculate()">計算</button>
 
 <div class="result" id="result"></div>
+
+<div class="info" id="info"></div>
 
 <div class="footer">
 間違えてたらごめんなさい。<br>
@@ -226,11 +248,11 @@ function calculate(){
 
     document.getElementById("result").innerHTML=`
 
-        <div class="smallText">本日の7.75h</div>
+        <div class="smallText">開始時間 ～</div>
 
-        <div class="midText">${startStr}～</div>
+        <div class="finish775">本日の7.75h</div>
 
-        <div class="bigText">${endStr}</div>
+        <div class="finish775">${endStr}</div>
 
     `;
 }
