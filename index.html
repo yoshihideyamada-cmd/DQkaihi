@@ -11,9 +11,7 @@
 
 <style>
 
-*{
-    box-sizing:border-box;
-}
+*{ box-sizing:border-box; }
 
 body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
@@ -51,16 +49,10 @@ label{
     margin-top:10px;
 }
 
-/* ★15分単位でも安定表示 */
 input[type="time"]{
     width:100%;
-    max-width:100%;
-    display:block;
-    margin:8px auto 0 auto;
-
     padding:12px;
     font-size:24px;
-
     border:1px solid #ccc;
     border-radius:8px;
 
@@ -68,13 +60,11 @@ input[type="time"]{
     appearance:none;
 }
 
-/* ★15分刻み */
 button{
     width:100%;
     padding:14px;
     margin-top:16px;
     font-size:20px;
-
     border:none;
     border-radius:8px;
     background:#d60000;
@@ -139,9 +129,7 @@ button{
 </div>
 
 <label>出勤時間</label>
-
-<!-- ★15分単位 -->
-<input type="time" id="startTime" step="900">
+<input type="time" id="startTime">
 
 <button onclick="calculate()">計算</button>
 
@@ -151,7 +139,7 @@ button{
 <div class="footer">
 間違えてたらごめんなさい。<br>
 修正依頼は山田まで。<br>
-最終更新:2026/06/13
+最終更新:26/06/13
 </div>
 
 </div>
@@ -193,6 +181,13 @@ function fmt(m){
     return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
 }
 
+/* ★15分切り上げ */
+function roundUp15(min){
+
+    return Math.ceil(min / 15) * 15;
+}
+
+/* 休憩考慮計算 */
 function calc(start,target,breaks){
 
     let work=0;
@@ -239,10 +234,13 @@ function calc(start,target,breaks){
 
 function calculate(){
 
-    const start=document.getElementById("startTime").value;
+    let start=document.getElementById("startTime").value;
     if(!start)return;
 
-    const sm=toMin(start);
+    let sm=toMin(start);
+
+    /* ★ここが重要：15分切り上げ */
+    sm = roundUp15(sm);
 
     const useA = sm < 735;
 
