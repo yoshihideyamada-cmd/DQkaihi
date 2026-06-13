@@ -103,11 +103,21 @@ button{
     font-weight:bold;
 }
 
+/* 7.5hボーダー（緑） */
 .safeTime{
     font-size:40px;
     font-weight:bold;
     color:#008000;
     margin-top:10px;
+}
+
+/* ★報告用（確実に効く版） */
+.reportTime{
+    font-size:14px !important;
+    color:#00bcd4 !important;
+    font-weight:bold !important;
+    margin-top:6px;
+    display:block;
 }
 
 .info{
@@ -201,7 +211,7 @@ function roundUp15(min){
     return Math.ceil(min / 15) * 15;
 }
 
-/* ★改造版 calc（使用休憩だけ記録） */
+/* 休憩考慮計算 */
 function calc(start,target,breaks){
 
     let work=0;
@@ -241,9 +251,7 @@ function calc(start,target,breaks){
             work=target;
         }else{
             work+=usable;
-
             usedBreaks.push(next.break);
-
             cur=next.e;
         }
     }
@@ -271,11 +279,12 @@ function calculate(){
     const f775 = res775.time;
 
     document.getElementById("result").innerHTML=`
-    <div>本日の7.75h</div>
         <div class="timeRow">
             <div class="startTimeRounded">${fmt(sm)} ～</div>
             <div class="finish775">${fmt(f775)}</div>
         </div>
+
+        <div>本日の7.75h</div>
 
         <div class="warning">⚠ ${fmt(f775)}以降は代付対象</div>
 
@@ -283,6 +292,7 @@ function calculate(){
 
         <div>代付ボーダー打刻時間（7.5h）</div>
         <div class="safeTime">${fmt(f750)} ～ ${fmt(f775-1)}</div>
+
         <div class="reportTime">報告は「${fmt(f750)}」</div>
     `;
 
