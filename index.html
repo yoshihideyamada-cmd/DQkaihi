@@ -11,7 +11,6 @@
 
 <style>
 
-/* ★全体ズレ防止 */
 *{
     box-sizing:border-box;
 }
@@ -21,11 +20,9 @@ body{
     background:#f5f5f5;
     margin:0;
     padding:20px;
-
     -webkit-text-size-adjust:100%;
 }
 
-/* カード */
 .card{
     max-width:600px;
     margin:auto;
@@ -33,11 +30,9 @@ body{
     border-radius:16px;
     padding:24px;
     box-shadow:0 4px 12px rgba(0,0,0,.1);
-
     overflow:hidden;
 }
 
-/* タイトル */
 h1{
     text-align:center;
     margin-bottom:10px;
@@ -50,14 +45,13 @@ h1{
     margin-bottom:24px;
 }
 
-/* ラベル */
 label{
     display:block;
     font-weight:bold;
     margin-top:10px;
 }
 
-/* ★Safari timeズレ完全対策 */
+/* ★15分単位でも安定表示 */
 input[type="time"]{
     width:100%;
     max-width:100%;
@@ -74,7 +68,7 @@ input[type="time"]{
     appearance:none;
 }
 
-/* ボタン */
+/* ★15分刻み */
 button{
     width:100%;
     padding:14px;
@@ -85,10 +79,8 @@ button{
     border-radius:8px;
     background:#d60000;
     color:#fff;
-    cursor:pointer;
 }
 
-/* 結果 */
 .result{
     text-align:center;
     margin-top:30px;
@@ -98,7 +90,6 @@ button{
     font-size:56px;
     font-weight:bold;
     color:#d60000;
-    margin:12px 0;
 }
 
 .safeTime{
@@ -113,7 +104,6 @@ button{
     font-weight:bold;
 }
 
-/* 情報 */
 .info{
     margin-top:30px;
     border-top:1px solid #ccc;
@@ -126,7 +116,6 @@ button{
     margin-top:10px;
 }
 
-/* フッター */
 .footer{
     margin-top:30px;
     border-top:1px solid #eee;
@@ -139,7 +128,6 @@ button{
 </style>
 </head>
 
-<!-- 右クリック禁止（軽い対策） -->
 <body oncontextmenu="return false">
 
 <div class="card">
@@ -151,7 +139,9 @@ button{
 </div>
 
 <label>出勤時間</label>
-<input type="time" id="startTime">
+
+<!-- ★15分単位 -->
+<input type="time" id="startTime" step="900">
 
 <button onclick="calculate()">計算</button>
 
@@ -168,11 +158,9 @@ by 山田
 
 <script>
 
-// 時間（分）
 const WORK_750 = 450;
 const WORK_775 = 465;
 
-/* パターンA */
 const scheduleA = [
 ["08:45","09:00"],
 ["12:15","13:00"],
@@ -184,7 +172,6 @@ const scheduleA = [
 ["07:00","07:15"]
 ];
 
-/* パターンB */
 const scheduleB = [
 ["17:45","18:30"],
 ["21:00","21:15"],
@@ -206,7 +193,6 @@ function fmt(m){
     return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
 }
 
-/* 休憩考慮計算 */
 function calc(start,target,breaks){
 
     let work=0;
@@ -292,7 +278,6 @@ function calculate(){
     `;
 }
 
-/* PWA service worker */
 if('serviceWorker' in navigator){
     navigator.serviceWorker.register('service-worker.js');
 }
