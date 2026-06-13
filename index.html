@@ -11,7 +11,7 @@
 
 <style>
 
-/* ★全体ズレ防止（重要） */
+/* ★全体ズレ防止 */
 *{
     box-sizing:border-box;
 }
@@ -21,9 +21,11 @@ body{
     background:#f5f5f5;
     margin:0;
     padding:20px;
+
+    -webkit-text-size-adjust:100%;
 }
 
-/* カード中央固定 */
+/* カード */
 .card{
     max-width:600px;
     margin:auto;
@@ -31,8 +33,11 @@ body{
     border-radius:16px;
     padding:24px;
     box-shadow:0 4px 12px rgba(0,0,0,.1);
+
+    overflow:hidden;
 }
 
+/* タイトル */
 h1{
     text-align:center;
     margin-bottom:10px;
@@ -45,15 +50,15 @@ h1{
     margin-bottom:24px;
 }
 
+/* ラベル */
 label{
     display:block;
-    text-align:left;
     font-weight:bold;
     margin-top:10px;
 }
 
-/* ★Safariズレ完全対策 */
-input{
+/* ★Safari timeズレ完全対策 */
+input[type="time"]{
     width:100%;
     max-width:100%;
     display:block;
@@ -64,6 +69,9 @@ input{
 
     border:1px solid #ccc;
     border-radius:8px;
+
+    -webkit-appearance:none;
+    appearance:none;
 }
 
 /* ボタン */
@@ -72,6 +80,7 @@ button{
     padding:14px;
     margin-top:16px;
     font-size:20px;
+
     border:none;
     border-radius:8px;
     background:#d60000;
@@ -104,7 +113,7 @@ button{
     font-weight:bold;
 }
 
-/* ルール表示 */
+/* 情報 */
 .info{
     margin-top:30px;
     border-top:1px solid #ccc;
@@ -151,14 +160,15 @@ button{
 
 <div class="footer">
 間違えてたらごめんなさい。<br>
-修正依頼は山田迄。
+角刈りに修正依頼を。<br>
+by 山田
 </div>
 
 </div>
 
 <script>
 
-// 7.5h / 7.75h（分）
+// 時間（分）
 const WORK_750 = 450;
 const WORK_775 = 465;
 
@@ -196,7 +206,7 @@ function fmt(m){
     return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
 }
 
-/* 勤務時間計算（休憩考慮） */
+/* 休憩考慮計算 */
 function calc(start,target,breaks){
 
     let work=0;
@@ -248,7 +258,7 @@ function calculate(){
 
     const sm=toMin(start);
 
-    const useA = sm < 735; // 12:15境界
+    const useA = sm < 735;
 
     const breaks = useA ? scheduleA : scheduleB;
 
@@ -282,6 +292,7 @@ function calculate(){
     `;
 }
 
+/* PWA service worker */
 if('serviceWorker' in navigator){
     navigator.serviceWorker.register('service-worker.js');
 }
