@@ -75,30 +75,41 @@ button{
     margin-top:30px;
 }
 
+/* ★横並び表示 */
+.timeRow{
+    display:flex;
+    justify-content:center;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+/* ★開始時間（小・オレンジ） */
+.startTimeRounded{
+    font-size:14px;
+    color:#ff8c00;
+    font-weight:bold;
+}
+
+/* ★7.75h（大・赤） */
 .finish775{
     font-size:56px;
     font-weight:bold;
     color:#d60000;
 }
 
-.safeTime{
-    font-size:40px;
-    font-weight:bold;
-    color:#008000;
-    margin-top:10px;
-}
-
+/* 代付警告 */
 .warning{
     color:#d60000;
     font-weight:bold;
 }
 
-/* ★追加：丸め後開始時間 */
-.startTimeRounded{
-    font-size:14px;
-    color:#ff8c00;
+/* 7.5hボーダー */
+.safeTime{
+    font-size:40px;
     font-weight:bold;
-    margin-bottom:4px;
+    color:#008000;
+    margin-top:10px;
 }
 
 .info{
@@ -188,7 +199,7 @@ function fmt(m){
     return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
 }
 
-/* ★15分切り上げ */
+/* 15分切り上げ */
 function roundUp15(min){
     return Math.ceil(min / 15) * 15;
 }
@@ -255,10 +266,10 @@ function calculate(){
     const f775 = calc(sm,WORK_775,breaks);
 
     document.getElementById("result").innerHTML=`
-        <div class="startTimeRounded">${fmt(sm)} ～</div>
-
-        <div>本日の7.75h</div>
-        <div class="finish775">${fmt(f775)}</div>
+        <div class="timeRow">
+            <div class="startTimeRounded">${fmt(sm)} ～</div>
+            <div class="finish775">${fmt(f775)}</div>
+        </div>
 
         <div class="warning">⚠ ${fmt(f775)}以降は代付対象</div>
 
