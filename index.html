@@ -88,7 +88,7 @@ button{
 
 /* 開始（オレンジ） */
 .startTimeRounded{
-    font-size:28px;
+    font-size:25px;
     color:#ff8c00;
     font-weight:bold;
 }
@@ -110,7 +110,7 @@ button{
 
 /* 報告（水色） */
 .reportTime{
-    font-size:28px !important;
+    font-size:25px !important;
     color:#00bcd4 !important;
     font-weight:bold !important;
     margin-top:6px;
@@ -296,7 +296,7 @@ function calculate(){
         <div>代付ボーダー打刻時間（7.5h）</div>
         <div class="safeTime">${fmt(f750)} ～ ${fmt(f775-1)}</div>
 
-        <div class="reportTime">事後報告は「${fmt(f750)}」</div>
+        <div class="reportTime">事後報告=[${fmt(f750)}]</div>
     `;
 
     const pattern = useA
