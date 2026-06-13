@@ -55,7 +55,6 @@ input[type="time"]{
     font-size:24px;
     border:1px solid #ccc;
     border-radius:8px;
-
     -webkit-appearance:none;
     appearance:none;
 }
@@ -92,6 +91,14 @@ button{
 .warning{
     color:#d60000;
     font-weight:bold;
+}
+
+/* ★追加：丸め後開始時間 */
+.startTimeRounded{
+    font-size:14px;
+    color:#ff8c00;
+    font-weight:bold;
+    margin-bottom:4px;
 }
 
 .info{
@@ -183,7 +190,6 @@ function fmt(m){
 
 /* ★15分切り上げ */
 function roundUp15(min){
-
     return Math.ceil(min / 15) * 15;
 }
 
@@ -239,7 +245,6 @@ function calculate(){
 
     let sm=toMin(start);
 
-    /* ★ここが重要：15分切り上げ */
     sm = roundUp15(sm);
 
     const useA = sm < 735;
@@ -250,6 +255,8 @@ function calculate(){
     const f775 = calc(sm,WORK_775,breaks);
 
     document.getElementById("result").innerHTML=`
+        <div class="startTimeRounded">${fmt(sm)} ～</div>
+
         <div>本日の7.75h</div>
         <div class="finish775">${fmt(f775)}</div>
 
@@ -284,6 +291,3 @@ if('serviceWorker' in navigator){
 
 </body>
 </html>
-
-少し修正してる。
-これでベースにして。
