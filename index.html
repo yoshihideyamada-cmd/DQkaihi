@@ -75,7 +75,7 @@ button{
     margin-top:30px;
 }
 
-/* ★横並び表示 */
+/* 横並び */
 .timeRow{
     display:flex;
     justify-content:center;
@@ -84,27 +84,25 @@ button{
     margin-bottom:10px;
 }
 
-/* ★開始時間（小・オレンジ） */
+/* 開始（オレンジ） */
 .startTimeRounded{
     font-size:14px;
     color:#ff8c00;
     font-weight:bold;
 }
 
-/* ★7.75h（大・赤） */
+/* 7.75h（赤） */
 .finish775{
     font-size:56px;
     font-weight:bold;
     color:#d60000;
 }
 
-/* 代付警告 */
 .warning{
     color:#d60000;
     font-weight:bold;
 }
 
-/* 7.5hボーダー */
 .safeTime{
     font-size:40px;
     font-weight:bold;
@@ -203,11 +201,13 @@ function roundUp15(min){
     return Math.ceil(min / 15) * 15;
 }
 
-/* 休憩考慮計算 */
+/* ★改造版 calc（使用休憩だけ記録） */
 function calc(start,target,breaks){
 
     let work=0;
     let cur=start;
+
+    let usedBreaks=[];
 
     while(work<target){
 
@@ -223,7 +223,7 @@ function calc(start,target,breaks){
 
                 if(s>=cur){
                     if(!next || s<next.s){
-                        next={s,e};
+                        next={s,e,break:b};
                     }
                 }
             }
@@ -241,11 +241,14 @@ function calc(start,target,breaks){
             work=target;
         }else{
             work+=usable;
+
+            usedBreaks.push(next.break);
+
             cur=next.e;
         }
     }
 
-    return cur;
+    return { time: cur, usedBreaks };
 }
 
 function calculate(){
@@ -261,11 +264,13 @@ function calculate(){
 
     const breaks = useA ? scheduleA : scheduleB;
 
-    const f750 = calc(sm,WORK_750,breaks);
-    const f775 = calc(sm,WORK_775,breaks);
+    const res750 = calc(sm,WORK_750,breaks);
+    const res775 = calc(sm,WORK_775,breaks);
+
+    const f750 = res750.time;
+    const f775 = res775.time;
 
     document.getElementById("result").innerHTML=`
-    <div>本日の7.75h</div>
         <div class="timeRow">
             <div class="startTimeRounded">${fmt(sm)} ～</div>
             <div class="finish775">${fmt(f775)}</div>
@@ -289,8 +294,10 @@ function calculate(){
 
         <br><br>
 
-        <div class="ruleTitle">適用休憩</div>
-        ${breaks.map(b=>b[0]+" ～ "+b[1]).join("<br>")}
+        <div class="ruleTitle">実際に使用した休憩</div>
+        ${res775.usedBreaks.length
+            ? res775.usedBreaks.map(b=>b[0]+" ～ "+b[1]).join("<br>")
+            : "休憩なし"}
     `;
 }
 
