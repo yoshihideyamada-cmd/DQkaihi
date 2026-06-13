@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>代付回避くん</title>
+<title>代付回避くん Ver.01</title>
 
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#d60000">
@@ -82,6 +82,13 @@ button{
     color:#d60000;
 }
 
+.safeTime{
+    font-size:40px;
+    font-weight:bold;
+    color:#008000;
+    margin-top:10px;
+}
+
 .warning{
     color:#d60000;
     font-weight:bold;
@@ -108,13 +115,6 @@ button{
     padding-top:15px;
 }
 
-/* ★今回追加：小さい補助表示 */
-.smallText{
-    font-size:14px;
-    color:#666;
-    margin-bottom:4px;
-}
-
 </style>
 </head>
 
@@ -134,7 +134,6 @@ button{
 <button onclick="calculate()">計算</button>
 
 <div class="result" id="result"></div>
-
 <div class="info" id="info"></div>
 
 <div class="footer">
@@ -182,10 +181,13 @@ function fmt(m){
     return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
 }
 
+/* ★15分切り上げ */
 function roundUp15(min){
+
     return Math.ceil(min / 15) * 15;
 }
 
+/* 休憩考慮計算 */
 function calc(start,target,breaks){
 
     let work=0;
@@ -235,25 +237,42 @@ function calculate(){
     let start=document.getElementById("startTime").value;
     if(!start)return;
 
-    let sm = roundUp15(toMin(start));
+    let sm=toMin(start);
+
+    /* ★ここが重要：15分切り上げ */
+    sm = roundUp15(sm);
 
     const useA = sm < 735;
 
     const breaks = useA ? scheduleA : scheduleB;
 
+    const f750 = calc(sm,WORK_750,breaks);
     const f775 = calc(sm,WORK_775,breaks);
 
-    const startStr = fmt(sm);
-    const endStr = fmt(f775);
-
     document.getElementById("result").innerHTML=`
+        <div>本日の7.75h</div>
+        <div class="finish775">${fmt(f775)}</div>
 
-        <div class="smallText">開始時間 ～</div>
+        <div class="warning">⚠ ${fmt(f775)}以降は代付対象</div>
 
-        <div class="finish775">本日の7.75h</div>
+        <br>
 
-        <div class="finish775">${endStr}</div>
+        <div>代付ボーダー打刻時間（7.5h）</div>
+        <div class="safeTime">${fmt(f750)} ～ ${fmt(f775-1)}</div>
+    `;
 
+    const pattern = useA
+        ? "パターンA（00:00～12:14出勤）"
+        : "パターンB（12:15～23:59出勤）";
+
+    document.getElementById("info").innerHTML=`
+        <div class="ruleTitle">適用ルール</div>
+        ${pattern}
+
+        <br><br>
+
+        <div class="ruleTitle">適用休憩</div>
+        ${breaks.map(b=>b[0]+" ～ "+b[1]).join("<br>")}
     `;
 }
 
@@ -265,3 +284,6 @@ if('serviceWorker' in navigator){
 
 </body>
 </html>
+
+少し修正してる。
+これでベースにして。
